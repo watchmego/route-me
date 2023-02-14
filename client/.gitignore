@@ -12,7 +12,7 @@
 /build
 
 # misc
-/client/src/pages/routing/map (old)
+/client/src/pages/routing/map(old)
 .DS_Store
 .env.local
 .env.development.local
