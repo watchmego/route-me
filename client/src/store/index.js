@@ -1,15 +1,21 @@
-import { combineReducers, legacy_createStore as createStore } from "redux";
+import { combineReducers, createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
+import locationReducer from './location';
+import routeReducer from "./route";
+import routeSlice from './routeSlice';
 
-import locationReducer from './location'
 
-const rootReducer = combineReducers({
-    location: locationReducer
+ const rootReducer = combineReducers({
+    location: locationReducer,
+    route: routeReducer,
+    routeSlice: routeSlice.reducer
   })
 
-let enhancer;
 
-const configureStore = (preloadedState) => {
-    return createStore(rootReducer, preloadedState, enhancer);
-}
+const store = configureStore({
+    reducer: rootReducer, 
+    middleware: [thunk]
+})
 
-export default configureStore;
+export default store;

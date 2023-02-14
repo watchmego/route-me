@@ -1,21 +1,147 @@
-.body-container {
-    display: flex;
-    flex-direction: row;
-}
-.map-container {
-    height: 100vh;   
-    width: 80%;
-
-    }
-
-.left-panel {
-    height: 100vh;
+/* .panel {
     width: 20%;
-    display: flex;
-    flex-direction: column;
+}
+.addressInput {
+    background-image: url('/css/searchicon.png');
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 100%;
+    font-size: 16px;
+    padding: 6px  6px ;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+    
+
+  }
+
+.addressUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    position: fixed;
+    border: 1px solid #ddd;
+    background-color: #f6f6f6;
+    display: none;
+  }
+
+.addressUL li {
+
+margin-top: -1px;
+Prevent double borders
+padding: 12px;
+text-decoration: none;
+font-size: 18px;
+color: black;
+display: block;
 }
 
-/* .left-panel .flex-container {
-    
+.addressUL li header {
+background-color: #e2e2e2;
+cursor: default;
+}
+
+.addressUL li :hover:not(.header) {
+background-color: #eee;
+}
+
+
+.generateRoute {
+    position: fixed;
+    background-color:#0a0a23;
+    color: #fff;
+    border: none;
+    box-shadow: 0px 0px 2px 2px rgb(0,0,0);
 } */
 
+.panel {
+    display: flex;
+    flex-direction: column;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    width: 300px;
+  }
+  
+  .search {
+    width: 95%;
+  }
+  
+  .addressInput {
+    width: 95%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .addressUL {
+    position: absolute;
+    list-style: none;
+    background-color: #fff;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 1;
+    display: none;
+  }
+
+.search input[type="text"]:focus ~ .addressUL {
+    display: block;
+}
+
+.addressUL:hover {
+    display: block;
+}
+
+
+
+  .addressUL button {
+    width: 90%;
+    padding: 20px;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    color: black;
+    cursor: pointer;
+}
+  
+  .addressUL li {
+    padding: 10px;
+  }
+  
+  .addressUL li button {
+    width: 90%;
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  .generateRoute {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;    
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }

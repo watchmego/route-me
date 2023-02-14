@@ -1,3 +1,5 @@
+//CURRENTLY NOT IN USE
+
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setLocation } from "../store/location";

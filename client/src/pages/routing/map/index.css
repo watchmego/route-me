@@ -1,4 +1,7 @@
 .routePage {
     display: flex;
     flex: 8 2 auto;
+    width: 80vw;
+    margin: auto;
+    height: calc(100vh - 68px); /* calculate height of the screen minus the heading */
 }

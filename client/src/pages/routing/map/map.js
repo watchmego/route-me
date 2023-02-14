@@ -1,69 +1,71 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext, createContext } from 'react';
 import { useSelector } from 'react-redux';
-import maplibregl from 'maplibre-gl';
-import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
-import { globalConfig } from '../../../g-Config';
-import useGeolocation from './customHook';
+import { MapContainer, TileLayer, useMap, Marker, Popup, Circle } from 'react-leaflet'
+import { locContext } from '.';
+import * as L from 'leaflet';
+import MyMarkers from './markers';
+const initialCentre = [34, 72];
 
-export default function Map() {
-    useGeolocation();
+const Location = () => {
 
-    const loc = useSelector(state => state.location);
-    const API_KEY= globalConfig.API_KEY;
-    const mapContainerRef = useRef(null);
-    const map = useRef(null);
-    const marker = useRef(null);
-  
+    const route = useSelector(store => {console.log(store); return store.route});
+    const map = useMap();  
+    const { centre, setCentre, manualLoc, showDistance, setShowDistance }  = useContext(locContext);
+    
+  //centre map if address is entered into address search bar
+    useEffect(() => {
+      if(!manualLoc) {
+        map.locate({setView: true, maxZoom: 16});
+        map.on('locationfound', (event) => {
+          if(JSON.stringify(centre) === JSON.stringify(event.latlng)) {
+            console.log(centre, event.latlng, JSON.stringify(centre) === JSON.stringify(event.latlng));
+          setCentre(event.latlng);
+          }
+        })
+      } else if(centre.lat && centre !== map.getCenter()){  
+        map.setView(centre);
+      }
+    }, [map, manualLoc, centre]);
 
     useEffect(() => {
-        console.log('running useEffect', loc);
-
-        if(map.current) {
-            console.log('recentering');
-            map.current.setCenter([loc.longitude, loc.latitude]);
-//currently not removing marker, todo
-            if(marker.current) {
-                marker.current.remove();
-            }
-            marker.current = new maplibregl.Marker({color: "#FF0000"})
-            .setLngLat([loc.longitude, loc.latitude])
-            marker.current.addTo(map.current);
-            
-            
-        } else {
-            map.current = new maplibregl.Map({
-            container: mapContainerRef.current,
-            style: `https://api.maptiler.com/maps/streets/style.json?key=${API_KEY}`,
-            center: [loc.longitude, loc.latitude],
-            zoom: 5
-        });
-        map.current.on("load", () => {
-                
-                  
-                map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
-
-                new maplibregl.Marker({color: "#FF0000"})
-                    .setLngLat([loc.longitude, loc.latitude])
-                    .addTo(map.current);
-
-            });
-    }
-    // return () => {
-    // if(map) map.remove();
-    // }
-  }, [loc]);
-
-  // useEffect(() => {
-  //   console.log("updating location", mapContainerRef);
-  // },[loc]);
+      if(Object.keys(route).length > 0) {
+        map.eachLayer((layer)=> {if(layer._path) map.removeLayer(layer) });
+        console.log('adding polyline', route);
+        let polyline = L.polyline(route.points.coordinates, {color: 'red'}).addTo(map);
+        map.fitBounds(polyline.getBounds());
+        
+      }
+    },[route, map])
 
 
+    return centre
+    ? 
+    (
+      <>
+        <MyMarkers map={map}/>
+      </>
+    )
+     : null
+}
+
+const Map = () => {
+  console.log('rendering map');
   return (
-      <div className="map-wrap">
-        <div ref={mapContainerRef} className="map"/>
-      </div>
+    <div className="container">
+      <MapContainer
+        center={initialCentre}
+        zoom={18}
+        scrollWheelZoom={true}
+      >
+        <TileLayer url={"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"} />
+
+        <Location />
+        
+      </MapContainer>
+    </div>
   );
 }
 
 
+export default Map; 

@@ -1,9 +1,9 @@
 import HeaderBox from './components/headerFooter/header.js'
 import RoutePage from './pages/routing/map/index.js';
 import { Provider } from 'react-redux';
-import configureStore from "./store";
+import store from "./store";
 
-const store = configureStore();
+//const providerStore = store();
 
 function App() {
   return (
